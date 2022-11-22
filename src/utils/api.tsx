@@ -3,16 +3,19 @@ import { getDayOrNight } from './getDayOrNight';
 import axios from 'axios';
 
 const dev = process.env.NODE_ENV !== 'production';
+const platform = process.env.PLATFORM === 'vercel';
 const server = dev
     ? 'http://localhost:3000'
+    : platform
+    ? 'https://ren-weatherapp.vercel.app'
     : 'https://ren-weatherapp.netlify.app';
 
 const get = async (locationInput: string | undefined) => {
-    const local = Boolean(locationInput) ? locationInput : 'Tokyo'
+    const local = Boolean(locationInput) ? locationInput : 'Tokyo';
 
-    const response = await axios.get(
-        `${server}/api/weather?place=${local}`
-    );
+    console.log(server);
+
+    const response = await axios.get(`${server}/api/weather?place=${local}`);
     const { dayOrNight } = getDayOrNight(response.data.data);
     const newResponse = { ...dayOrNight, ...response.data.data };
     return newResponse;
