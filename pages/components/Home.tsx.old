@@ -1,0 +1,234 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { useQueryClient, useQuery } from '@tanstack/react-query';
+import { api } from '../api/api';
+import { Weather } from './Weather';
+
+const Home = () => {
+    const queryClient = useQueryClient();
+    const [locationInput, setLocationInput] = useState<string>('Tokyo');
+    const inputValueRef = useRef<HTMLInputElement>(null);
+    const [alertTimer, setAlertTimer] = useState(false);
+    let opacityLevel = '1';
+    let conditionOfDay;
+    let timeOfDay;
+    let formButtonColor;
+    const locations: Array<string> = [
+        'Gramado',
+        'Cotswold',
+        'Tokyo',
+        'Zermatt',
+    ];
+
+    const {
+        data: weather,
+        isError,
+        isFetched,
+    } = useQuery(['weather', locationInput], () => api.get(locationInput), {
+        keepPreviousData: true,
+        retry: false,
+        onError: () => {
+            opacityLevel = '0';
+            errorAlert();
+            setLocationInput(getPreviousWeather());
+        },
+    });
+    if (!isFetched) opacityLevel = '0';
+
+    useEffect(() => {
+        console.log('renderizou!');
+        if (inputValueRef.current) {
+            inputValueRef.current.focus();
+        }
+    });
+
+    const getPreviousWeather = () => {
+        const previousWeather = queryClient
+            .getQueriesData(['weather'])
+            .filter((previous: any) => {
+                if (!Boolean(previous[1] == undefined)) {
+                    return previous;
+                }
+            });
+
+        return previousWeather[previousWeather.length - 1][0][1] as string;
+    };
+
+    const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (inputValueRef.current) {
+            setLocationInput(inputValueRef.current?.value);
+            inputValueRef.current.value = '';
+        }
+    };
+
+    const errorAlert = () => {
+        setAlertTimer(true);
+        setTimeout(() => {
+            setAlertTimer(false);
+        }, 3 * 1000);
+    };
+
+    if (weather) {
+        timeOfDay = weather.current.is_day ? 'day' : 'night';
+        const code = weather.current.condition.code;
+
+        const clear = Boolean(code == 1000);
+        const cloudy = Boolean(
+            code == 1003 ||
+                code == 1006 ||
+                code == 1009 ||
+                code == 1030 ||
+                code == 1069 ||
+                code == 1087 ||
+                code == 1135 ||
+                code == 1273 ||
+                code == 1276 ||
+                code == 1279 ||
+                code == 1282
+        );
+        const rain = Boolean(
+            code == 1063 ||
+                code == 1069 ||
+                code == 1072 ||
+                code == 1150 ||
+                code == 1153 ||
+                code == 1180 ||
+                code == 1183 ||
+                code == 1186 ||
+                code == 1189 ||
+                code == 1192 ||
+                code == 1195 ||
+                code == 1204 ||
+                code == 1207 ||
+                code == 1240 ||
+                code == 1243 ||
+                code == 1246 ||
+                code == 1249 ||
+                code == 1252
+        );
+
+        // background and button color
+        if (clear) {
+            conditionOfDay = `clear`;
+            formButtonColor = `bg-[#e5ba92]`;
+            if (timeOfDay === 'night') formButtonColor = `bg-[#181e27]`;
+        } else if (cloudy) {
+            conditionOfDay = `cloudy`;
+            formButtonColor = `bg-[#fa6d1b]`;
+            if (timeOfDay === 'night') formButtonColor = `bg-[#181e27]`;
+        } else if (rain) {
+            conditionOfDay = `rainy`;
+            formButtonColor = `bg-[#647d75]`;
+            if (timeOfDay === 'night') formButtonColor = `bg-[#325c80]`;
+        } else {
+            conditionOfDay = `snowy`;
+            formButtonColor = `bg-[#4d72aa]`;
+            if (timeOfDay === 'night') formButtonColor = `bg-[#1b1b1b]`;
+        }
+    }
+
+    return (
+        <main
+            className={
+                'flex h-screen flex-col bg-cover bg-center bg-no-repeat transition-all duration-500 after:pointer-events-none after:absolute after:top-0 after:left-0 after:z-0 after:block after:h-full after:w-full after:bg-[rgba(0,0,0,0.3)] sm:flex-row'
+            }
+            style={{
+                backgroundImage: weather
+                    ? `url(./images/${timeOfDay}/${conditionOfDay}.jpg)`
+                    : 'none',
+                opacity: opacityLevel,
+            }}
+        >
+            {weather && <Weather weather={weather} />}
+
+            <section className="relative z-10 flex flex-1 flex-col overflow-y-auto border border-solid border-[#ffffff2d] bg-[#6e6e6e3f] py-6 px-6 font-normal text-[#ccc] shadow-customWeather backdrop-blur-md">
+                {/* form input */}
+                <form
+                    onSubmit={handleSubmit}
+                    className="mb-9 flex justify-between pt-3"
+                >
+                    <input
+                        className="w-4/5 self-end border-b border-[#ccc] bg-transparent text-sm font-medium text-white outline-none transition-all duration-500 placeholder:font-normal placeholder:text-[#ccc] only-of-type:pl-[3px] sm:text-lg"
+                        type="text"
+                        required
+                        ref={inputValueRef}
+                        placeholder="Search Location..."
+                    />
+                    <button
+                        className={`absolute top-0 right-0 ${formButtonColor} px-3 py-4 transition-all duration-500 sm:px-5 sm:py-6`}
+                        style={{
+                            backgroundColor: weather && `${formButtonColor}`,
+                        }}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-6 md:h-6"
+                            width="1em"
+                            height="1em"
+                            preserveAspectRatio="xMidYMid meet"
+                            viewBox="0 0 24 24"
+                        >
+                            <g fill="none" fillRule="evenodd">
+                                <path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z" />
+                                <path
+                                    fill="currentColor"
+                                    d="M5.5 10a4.5 4.5 0 1 1 9 0a4.5 4.5 0 0 1-9 0ZM10 2.5a7.5 7.5 0 1 0 4.136 13.757l4.803 4.804a1.5 1.5 0 0 0 2.122-2.122l-4.804-4.803A7.5 7.5 0 0 0 10 2.5Z"
+                                />
+                            </g>
+                        </svg>
+                    </button>
+                </form>
+
+                {/* locations list */}
+                <ul className="border-b border-[#ccc] text-xs transition-all sm:text-base">
+                    {locations.map((location) => {
+                        const id = Math.floor(Math.random() * Date.now());
+                        return (
+                            <li
+                                className="mb-8 cursor-pointer font-normal tracking-wide"
+                                onClick={(e) =>
+                                    setLocationInput(e.currentTarget.innerText)
+                                }
+                                key={id}
+                            >
+                                {location}
+                            </li>
+                        );
+                    })}
+                </ul>
+
+                {/* weather details */}
+                {weather && (
+                    <ul className="mt-10 border-b border-[#ccc] text-xs font-normal transition-all sm:text-base">
+                        <h4 className="font-bold tracking-wide text-white">
+                            Weather Details
+                        </h4>
+                        <li className="my-8 flex justify-between tracking-wide">
+                            <span>Cloudy</span>
+                            <span>{weather.current.cloud}%</span>
+                        </li>
+                        <li className="my-8 flex justify-between tracking-wide">
+                            <span>Humidity</span>
+                            <span>{weather.current.humidity}%</span>
+                        </li>
+                        <li className="mb-10 flex justify-between tracking-wide">
+                            <span>Wind</span>
+                            <span>{weather.current.wind_kph}km/h</span>
+                        </li>
+                    </ul>
+                )}
+            </section>
+
+            {alertTimer && (
+                <span className="absolute -top-52 left-1/2 z-50 h-44 w-72 -translate-x-1/2 animate-alert-error rounded-lg border border-solid border-[#ffffff2d] bg-[#6e6e6e3f] p-10 text-center font-bold text-white opacity-100 backdrop-blur-md transition-all sm:w-[400px]">
+                    City not found, please try again
+                </span>
+            )}
+
+            {/* loading animation */}
+        </main>
+    );
+};
+
+export default Home;
