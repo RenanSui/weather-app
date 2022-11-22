@@ -23,7 +23,7 @@ export const Weather = ({ weather }: IWeatherProps) => {
     };
 
     return (
-        <section className="relative z-10 flex flex-wrap justify-center py-10 text-white transition-all duration-300 sm:mx-6 sm:mt-auto sm:w-4/12 sm:items-end sm:justify-start md:w-6/12 md:px-0 lg:ml-12 lg:justify-start">
+        <section className="relative z-10 flex flex-wrap justify-center py-10 text-white transition-all duration-300 sm:mx-6 sm:mt-auto sm:w-4/12 sm:items-end sm:justify-start md:w-6/12 md:px-0 lg:ml-12 lg:justify-start lg:w-7/12">
             <h1 className="mx-2 flex justify-center text-8xl tracking-wide sm:mb-3">
                 {Math.floor(current.temp_c)}°
             </h1>

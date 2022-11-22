@@ -58,9 +58,11 @@ const Home = () => {
                     opacity: !isFetched ? '0' : isError ? '0' : '1',
                 }}
             >
-                {/* main weather panel */}
+                {/* main location info*/}
                 {weather && <Weather weather={weather} />}
-                <section className="relative z-10 flex flex-1 flex-col overflow-y-auto border border-solid border-[#ffffff2d] bg-[#6e6e6e3f] py-6 px-6 font-normal text-[#ccc] shadow-customWeather backdrop-blur-md">
+
+                {/* panel */}
+                <section className="relative z-10 flex flex-1 flex-col overflow-y-auto border border-solid border-[#ffffff2d] bg-[#6e6e6e3f] py-8 px-8 font-normal text-[#ccc] shadow-customWeather backdrop-blur-md">
                     {/* form input */}
                     <Form
                         inputValueRef={inputValueRef}
