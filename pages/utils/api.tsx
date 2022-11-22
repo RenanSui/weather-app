@@ -2,8 +2,15 @@ import { QueryClient } from '@tanstack/react-query';
 import { getDayOrNight } from './getDayOrNight';
 import axios from 'axios';
 
+const dev = process.env.NODE_ENV !== 'production';
+const server = dev
+    ? 'http://localhost:3000'
+    : 'https://ren-weatherapp.netlify.app';
+
 const get = async (locationInput: string | undefined) => {
-    const response = await axios.get(`/api/weather?place=${locationInput}`);
+    const response = await axios.get(
+        `${server}/api/weather?place=${locationInput}`
+    );
     const { dayOrNight } = getDayOrNight(response.data.data);
     const newResponse = { ...dayOrNight, ...response.data.data };
     return newResponse;
