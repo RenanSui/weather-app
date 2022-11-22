@@ -8,8 +8,10 @@ const server = dev
     : 'https://ren-weatherapp.netlify.app';
 
 const get = async (locationInput: string | undefined) => {
+    const local = Boolean(locationInput) ? locationInput : 'Tokyo'
+
     const response = await axios.get(
-        `${server}/api/weather?place=${locationInput}`
+        `${server}/api/weather?place=${local}`
     );
     const { dayOrNight } = getDayOrNight(response.data.data);
     const newResponse = { ...dayOrNight, ...response.data.data };
