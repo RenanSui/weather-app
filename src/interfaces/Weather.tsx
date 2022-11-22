@@ -11,9 +11,9 @@ export interface IWeatherCurrent {
     cloud: number;
 }
 
-export interface IWeatherLocation {
-    name: string;
-    localtime: string;
+export interface IWeatherProps {
+    weather: IWeather;
+    children?: React.ReactNode;
 }
 
 export interface IWeather {
@@ -24,7 +24,7 @@ export interface IWeather {
     colorFormButton: string;
 }
 
-export interface IWeatherProps {
-    weather: IWeather;
-    children?: React.ReactNode;
+export interface IWeatherLocation {
+    name: string;
+    localtime: string;
 }

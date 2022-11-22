@@ -1,5 +1,7 @@
 import { IWeatherProps } from "../interfaces/Weather";
 
+
+
 export const WeatherDetails = ({ weather }: IWeatherProps) => {
     return (
         <ul className="mt-10 border-b border-[#ccc] text-xs font-normal transition-all sm:text-base">
