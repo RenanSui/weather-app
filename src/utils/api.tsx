@@ -15,7 +15,9 @@ const get = async (locationInput: string | undefined) => {
 
     console.log(server);
 
-    const response = await axios.get(`${server}/api/weather?place=${local}`);
+    const response = await axios.get(
+        `https://ren-mycustomapiserver.vercel.app/api/api?apitype=weather&params=${local}`
+    );
     const { dayOrNight } = getDayOrNight(response.data.data);
     const newResponse = { ...dayOrNight, ...response.data.data };
     return newResponse;
@@ -39,6 +41,7 @@ const getPreviousWeather = (queryClient: QueryClient) => {
             }
         });
 
+    console.log(previousWeather)
     return previousWeather[previousWeather.length - 1][0][1] as string;
 };
 
