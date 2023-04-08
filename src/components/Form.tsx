@@ -21,9 +21,12 @@ export const Form = ({
             onSubmit={handleSubmit}
             className="mb-9 flex justify-between pt-3"
         >
+            <h1 className='hidden'>Type Your Location Input</h1>
             <input
                 className="w-4/5 self-end border-b border-[#ccc] bg-transparent text-sm font-medium text-white outline-none transition-all duration-500 placeholder:font-normal placeholder:text-[#ccc] only-of-type:pl-[3px] sm:text-lg"
                 type="text"
+                id='location'
+                name='location'
                 required
                 ref={inputValueRef}
                 placeholder="Search Location..."

@@ -1,4 +1,19 @@
+/* expense tracker */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@keyframes rollout {
+    0% {
+        transform: translateX(-100px);
+    }
+    100% {
+        transform: none;
+    }
+}
+
+.roll-out {
+    animation: rollout 0.4s;
+}

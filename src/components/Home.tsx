@@ -1,12 +1,17 @@
+// packages
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { WeatherDetails } from './WeatherDetails';
-import { IWeather } from '../interfaces/Weather';
-import { LocationList } from './LocationList';
 import { useRef, useState } from 'react';
+
+// components
+import { WeatherDetails } from './WeatherDetails';
+import { LocationList } from './LocationList';
 import { SpanAlert } from './SpanAlert';
 import { Weather } from './Weather';
-import { api } from '../utils/api';
 import { Form } from './Form';
+
+// utilities
+import { IWeather } from '../interfaces/Weather';
+import { api } from '../utils/api';
 
 const Home = () => {
     const queryClient = useQueryClient();

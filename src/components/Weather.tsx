@@ -1,4 +1,4 @@
-import { IWeatherProps } from "../interfaces/Weather";
+import { IWeatherProps } from '../interfaces/Weather';
 
 export const Weather = ({ weather }: IWeatherProps) => {
     const { location, current } = weather;
@@ -23,34 +23,53 @@ export const Weather = ({ weather }: IWeatherProps) => {
     };
 
     return (
-        <section className="relative z-10 flex flex-wrap justify-center py-10 text-white transition-all duration-300 sm:mx-6 sm:mt-auto sm:w-4/12 sm:items-end sm:justify-start md:w-6/12 md:px-0 lg:ml-12 lg:justify-start lg:w-7/12">
-            <h1 className="mx-2 flex justify-center text-8xl tracking-wide sm:mb-3">
-                {Math.floor(current.temp_c)}°
+        <section
+            className="relative z-10 flex flex-wrap justify-center py-10 text-white transition-all duration-300 sm:mx-6 sm:mt-auto sm:w-4/12 sm:items-end sm:justify-start md:w-6/12 md:px-0 lg:ml-12 lg:w-7/12 lg:justify-start"
+            aria-labelledby="main-location-weather-details"
+        >
+            <h1 className="hidden" id="main-location-weather-details">
+                Location temperature detail
             </h1>
-            <div
-                id="city-time"
+            <p className="mx-2 flex justify-center text-8xl tracking-wide sm:mb-3">
+                {Math.floor(current.temp_c)}°
+            </p>
+            <section
                 className="mx-2 mb-3 flex flex-col justify-end font-medium"
+                aria-labelledby="sub-location-weather-details"
             >
-                <h1 className="mb-3 break-all text-center text-4xl tracking-wide transition-all sm:text-left md:text-5xl">
-                    {location.name}
+                <h1 className="hidden" id="sub-location-weather-details">
+                    Location name and time details
                 </h1>
-                <div className="mx-auto text-xs tracking-wide sm:mx-0 sm:mb-1">
-                    <span>{time} - </span>
-                    <span>
+                <p className="mb-3 break-all text-center text-4xl tracking-wide transition-all sm:text-left md:text-5xl">
+                    {location.name}
+                </p>
+                <section
+                    className="mx-auto text-xs tracking-wide sm:mx-0 sm:mb-1"
+                    aria-labelledby="location-time-hour-details"
+                >
+                    <h1 className="hidden" id="location-time-hour-details">
+                        Location time details
+                    </h1>
+                    <p className="inline-block">{time} - </p>
+                    <p className="inline-block">
                         {`${dayOfTheWeek(day, month, year)}`}
                         {` ${month}/${day}/${year}`}
-                    </span>
-                </div>
-            </div>
-            <div
+                    </p>
+                </section>
+            </section>
+            <section
                 id="weather-condition"
                 className="mb-3 ml-3 flex flex-col items-center justify-end tracking-wide"
+                aria-labelledby="location-weather-condition"
             >
+                <h1 className="hidden" id="location-weather-condition">
+                    Location Weather condition
+                </h1>
                 <img src={current.condition.icon} alt="icon" className="" />
-                <span className="text-sm font-medium ">
+                <p className="inline-block text-sm font-medium">
                     {current.condition.text}
-                </span>
-            </div>
+                </p>
+            </section>
         </section>
     );
 };

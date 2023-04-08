@@ -1,12 +1,17 @@
+// packages
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRef, useState } from 'react';
+
+// components
 import { WeatherDetails } from '../src/components/WeatherDetails';
 import { LocationList } from '../src/components/LocationList';
 import { SpanAlert } from '../src/components/SpanAlert';
-import { IWeather } from '../src/interfaces/Weather';
 import { Weather } from '../src/components/Weather';
-import { Form } from '../src/components/Form';
 import { Header } from '../src/utils/Header';
-import { useRef, useState } from 'react';
+import { Form } from '../src/components/Form';
+
+// utilities
+import { IWeather } from '../src/interfaces/Weather';
 import { api } from '../src/utils/api';
 
 const Home = () => {
@@ -48,7 +53,7 @@ const Home = () => {
             <Header />
             <main
                 className={
-                    'flex h-screen flex-col bg-cover bg-center bg-no-repeat transition-all duration-500 after:pointer-events-none after:absolute after:top-0 after:left-0 after:z-0 after:block after:h-full after:w-full after:bg-[rgba(0,0,0,0.3)] sm:flex-row '
+                    'flex h-screen flex-col-reverse bg-cover bg-center bg-no-repeat transition-all duration-500 after:pointer-events-none after:absolute after:top-0 after:left-0 after:z-0 after:block after:h-full after:w-full after:bg-[rgba(0,0,0,0.3)] sm:flex-row-reverse'
                 }
                 style={{
                     backgroundImage: weather
@@ -58,9 +63,6 @@ const Home = () => {
                     opacity: !isFetched ? '0' : isError ? '0' : '1',
                 }}
             >
-                {/* main location info*/}
-                {weather && <Weather weather={weather} />}
-
                 {/* panel */}
                 <section className="relative z-10 flex flex-1 flex-col overflow-y-auto border border-solid border-[#ffffff2d] bg-[#6e6e6e3f] py-8 px-8 font-normal text-[#ccc] shadow-customWeather backdrop-blur-md">
                     {/* form input */}
@@ -79,6 +81,10 @@ const Home = () => {
                     {/* weather details */}
                     {weather && <WeatherDetails weather={weather} />}
                 </section>
+
+                {/* main location info*/}
+                {weather && <Weather weather={weather} />}
+
                 {/* error alert */}
                 {alertTimer && <SpanAlert />}
             </main>
