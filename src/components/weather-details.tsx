@@ -5,13 +5,13 @@ import { WeatherContext } from './weather-context'
 // export const WeatherDetails = ({ weather }: IWeatherProps) => {
 export const WeatherDetails = () => {
   const { state } = useContext(WeatherContext)
-  const { weather, isFetched, isError } = state
+  const { weather } = state
 
   return (
     <>
       {weather && (
         <ul
-          className="mt-10 border-b border-[#ccc] text-xs font-normal transition-all sm:text-base"
+          className="mt-10 border-b border-[#ccc] text-xs font-normal transition-all duration-300 sm:text-base"
           aria-labelledby="sub-main-weather-details"
         >
           <h1 className="hidden" id="sub-main-weather-details">
