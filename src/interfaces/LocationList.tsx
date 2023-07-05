@@ -1,5 +1,7 @@
+import { Dispatch, ReactNode, SetStateAction } from 'react'
+
 export interface ILocationListProps {
-    setLocationInput: React.Dispatch<React.SetStateAction<string>>;
-    locations: Array<string>;
-    children?: React.ReactNode;
+  setLocationInput: Dispatch<SetStateAction<string>>
+  locations: Array<string>
+  children?: ReactNode
 }
