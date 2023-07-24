@@ -7,6 +7,7 @@ import { WeatherSchema } from '@/types'
 import { QueryClient, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { Dispatch, useContext, useEffect } from 'react'
+import { toast } from 'sonner'
 
 const SearchWeather = async (
   locationInput: string,
@@ -54,6 +55,8 @@ const SearchWeather = async (
       retry: false,
       refetchOnWindowFocus: false,
       onError: () => {
+        console.log('An Error Occurred. Please Try Again.')
+        toast.error('An Error Occurred. Please Try Again.')
         setLocationInput(getPreviousWeather(queryClient))
       },
     },

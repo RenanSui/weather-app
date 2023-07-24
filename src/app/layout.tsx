@@ -3,6 +3,7 @@ import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { WeatherProvider } from '@/components/weather-context'
 import { ReactNode } from 'react'
 import '../styles/globals.css'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata = {
   title: 'Weather - 天気',
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <WeatherProvider>
           <ReactQueryProvider>
             {children}
+            <Toaster />
             <TailwindIndicator />
           </ReactQueryProvider>
         </WeatherProvider>

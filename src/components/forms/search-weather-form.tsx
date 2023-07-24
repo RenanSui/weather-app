@@ -15,6 +15,7 @@ type Inputs = z.infer<typeof WeatherFormSchema>
 const WeatherSearchForm = () => {
   const [locationInput, setLocationInput] = useState('Seoul')
   const { state } = useContext(WeatherContext)
+
   SearchWeather(locationInput, setLocationInput)
 
   const form = useForm({
